@@ -119,7 +119,7 @@ make prod     # production: 3 API instances behind HAProxy
 Once running:
 
 - **API:** http://localhost:8086
-- **Interactive API docs (Swagger):** http://localhost:8086/docs
+- **Health check:** http://localhost:8086/health
 - **HAProxy stats (prod only):** http://localhost:8404
 
 > [!IMPORTANT]
