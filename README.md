@@ -1,70 +1,232 @@
+# pylovo — Synthetic Low-Voltage Grid Generator (Enerplanet fork)
 
-# THD-Spatial-AI Repository Template
+> **pylovo** = **PY**thon tool for **LO**w-**VO**ltage distribution grid generation.
 
-[![MkDocs](https://github.com/THD-Spatial-AI/github-template/actions/workflows/docs.yml/badge.svg)](https://thd-spatial-ai.github.io/github-template)
+This repository is the **Enerplanet fork** of pylovo, maintained by
+[THD-Spatial-AI](https://github.com/THD-Spatial-AI). It builds on the original
+[`tum-ens/pylovo`](https://github.com/tum-ens/pylovo) tool from the Technical
+University of Munich and extends it into a containerised, API-driven service used
+by the Enerplanet energy-planning platform.
 
-This repository is a template for projects under the `THD-Spatial-AI` GitHub group. It provides a basic structure, documentation, and guidance to help you prepare repositories for internal collaboration and open-source release.
+> [!NOTE]
+> **This is a modified fork, not the original pylovo.**
+> We have made substantial changes to the upstream project — most notably a new
+> REST API, full Docker/Compose deployment, a database connection pool, a caching
+> layer, and several new analysis modules (power flow, EV hosting capacity, AI
+> building-energy estimation). The package layout was also flattened from
+> `src/pylovo/` to `src/`. For the complete, file-by-file list of what changed,
+> see **[CHANGELOG.md](CHANGELOG.md)**. The original tool and its academic
+> reference are credited in [Attribution & citation](#attribution--citation).
 
-## What this template includes
+---
 
-- `README.md` (project overview and usage guidance)
-- `CONTRIBUTING.md` (contribution workflow and expectations)
-- `LICENSE` (required before making a repository public)
-- `docs/` (documentation pages for naming conventions and open-source readiness)
-- `mkdocs.yml` (MkDocs configuration for documentation site generation)
-- `ATTRIBUTIONS.md` (third-party attribution, if applicable)
-- `CITATION.cff` (citation metadata for research projects)
+## What is pylovo?
 
-## Before making a repository public
+pylovo generates **synthetic low-voltage (LV) distribution grids** for any chosen
+research area, using only open, georeferenced public data. It applies graph-based
+algorithms, clustering, and grid-planning heuristics to produce realistic,
+representative grids where real network data is unavailable or confidential.
 
-Use the open-source readiness checklist before publishing a repository under `THD-Spatial-AI`.
+**Inputs** (primarily from OpenStreetMap):
 
-- **Checklist:** [Open Source Checklist](docs/getting-started/open-source-checklist.md)
+- buildings, roads and transformer locations,
+- postal-code (PLZ) area polygons to define the research area,
+- consumer categories to estimate building/household loads,
+- standard infrastructure parameters (cable and transformer catalogues).
 
-The checklist covers:
+**Outputs:**
 
-- essential repository files (license, README, contributing, code of conduct)
-- Git LFS setup for large files
-- optional but recommended files
-- final review steps before publication
+- a feasible set of aggregated LV grid networks for the selected area, and
+- automatically computed grid statistics so the generated grids can be evaluated.
 
-## Repository naming
+The approach is scalable from a single postal-code area up to cities, states, or
+whole countries (hundreds of thousands of grids), and supports multiple feeders
+per transformer, greenfield/brownfield transformer placement, and variable
+equipment dimensioning.
 
-All repositories under `THD-Spatial-AI` should follow a consistent naming convention.
+### What this fork adds on top
 
-- **Guidelines:** [Repository Naming Guidelines](docs/getting-started/repository-naming.md)
+- **REST API** (`api/`) — a FastAPI service exposing grid generation, power-flow
+  analysis, building-energy estimation, EV hosting capacity, and reference data.
+- **Containerised deployment** — `Dockerfile`, `docker-compose*.yml`, HAProxy
+  load balancing, and a `Makefile` that wraps every common task.
+- **Performance & robustness** — pooled database connections (`src/database/connection_pool.py`),
+  a Redis-backed cache with in-memory fallback (`src/cache.py`), and added
+  indexes (`migrations/`).
+- **New analysis modules** — power flow (`src/analysis/powerflow_analysis.py`),
+  EV hosting capacity (`src/ev_hosting.py`), and a rule-based AI energy estimator
+  (`src/ai_estimation/`).
 
-## Required files for public repositories
+---
+
+## Architecture at a glance
+
+```
+                       ┌─────────────────────────────┐
+   HTTP clients ──────▶│  HAProxy (prod)  :8086      │
+                       └──────────────┬──────────────┘
+                                      │
+                    ┌─────────────────┼─────────────────┐
+                    ▼                 ▼                 ▼
+              pylovo-api-1      pylovo-api-2      pylovo-api-3   (FastAPI)
+                    └─────────────────┼─────────────────┘
+                                      │
+                  ┌───────────────────┼───────────────────┐
+                  ▼                                        ▼
+          PostgreSQL + PostGIS + pgRouting            Redis (cache)
+              (pylovo_db)
+```
+
+- **Grid pipeline:** `datapipeline` (ingest open data) → `constructor` (build
+  base tables) → `grid` (`GridGenerator` → `DatabaseClient`).
+- **Database:** PostgreSQL with PostGIS and pgRouting (shortest-path routing for
+  cable layout).
+- **Cache:** Redis, with automatic fallback to an in-memory store for dev.
+
+---
+
+## Prerequisites
+
+- **Docker** and **Docker Compose** (recommended path — everything runs in
+  containers).
+- **Git LFS** — large raw datasets are stored via LFS and must be pulled before
+  the first build.
+- Roughly a few GB of free disk for the raw data and database volume.
+
+---
+
+## Quick start
+
+```bash
+# 1. Clone and enter the repository
+git clone https://github.com/THD-Spatial-AI/enerplanet-pylovo.git
+cd enerplanet-pylovo
+
+# 2. Configure the environment
+cp .env.docker .env.docker.local   # then edit credentials/keys as needed
+#    Required keys: DBNAME, DBUSER, PASSWORD, HOST, PORT, TARGET_SCHEMA,
+#    EP_ONLINE_API_KEY
+
+# 3. One-shot setup: pull LFS data, create the database, build the image
+make setup
+
+# 4. Start the service
+make dev      # development: single API with hot reload, no load balancer
+# or
+make prod     # production: 3 API instances behind HAProxy
+```
+
+Once running:
+
+- **API:** http://localhost:8086
+- **Interactive API docs (Swagger):** http://localhost:8086/docs
+- **HAProxy stats (prod only):** http://localhost:8404
 
 > [!IMPORTANT]
-> Repositories under `THD-Spatial-AI` must include the following files before being made public. See the [Open Source Checklist](docs/getting-started/open-source-checklist.md) for the full list.
+> `.env.docker` holds database credentials and the `EP_ONLINE_API_KEY`. Never
+> commit real secrets — `.env*` files are git-ignored. Keep your filled-in copy
+> local only.
 
-| File | Requirement | Purpose |
-|------|-------------|---------|
-| `LICENSE` | Required | Legal permission for use, modification, and distribution ([Choose a License](https://choosealicense.com/)) |
-| `README.md` | Required | Project overview, setup, and usage instructions |
-| `CONTRIBUTING.md` | Required for community repos | Issue reporting, PR process, coding standards |
-| `CODE_OF_CONDUCT.md` | Required for community repos | Community expectations ([Contributor Covenant](https://www.contributor-covenant.org/)) |
-| `ATTRIBUTIONS.md` | Required if applicable | Third-party credits when using assets that require attribution |
-| `CITATION.cff` | Recommended for research | Machine-readable citation metadata ([Citation File Format](https://citation-file-format.github.io/)) |
-| `.gitattributes` | Required if using LFS | Git LFS tracking for large files ([Git LFS docs](https://git-lfs.com/)) |
+---
 
-### Optional but useful files
+## Generating grids
 
-- `CHANGELOG.md` — track notable changes
-- `CODEOWNERS` — define review ownership
-- `.github/ISSUE_TEMPLATE/` — issue templates
-- `.github/pull_request_template.md` — PR template
-- `SECURITY.md` — vulnerability reporting policy
-- `SUPPORT.md` — support and contact guidance
+The full workflow is **datapipeline → constructor → grid**. You can run the
+stages individually or chain them with `make process`.
 
-## Documentation (MkDocs)
+```bash
+# Full pipeline for one state (ingest + construct + generate grids)
+make process COUNTRY=germany STATE=hamburg WORKERS=10
 
-This template uses [MkDocs](https://www.mkdocs.org/) with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) for project documentation. Source files are in `docs/`.
+# …or run the stages one at a time:
+make datapipeline COUNTRY=germany STATE=hamburg   # ingest & enrich open data
+make constructor  COUNTRY=germany STATE=hamburg   # build base DB tables
+make grid         COUNTRY=germany STATE=hamburg WORKERS=10   # generate grids
+```
 
-For setup instructions (local development, GitHub Pages deployment, and workflow configuration), see the [Documentation Setup Guide](docs/getting-started/documentation-setup.md).
+`WORKERS` controls the number of parallel processes used during grid generation.
 
-> [!CAUTION]
-> **TO ALL MAINTAINERS:** Please review the [open-source readiness checklist](docs/getting-started/open-source-checklist.md) and ensure all required files are included before making a repository public.
->
-> This template is intended to be practical and easy to adapt. Keep it lightweight, take some time to remove sections you do not need **(Including this one)**, and update links/paths if you rename files in `docs/`.
+### Other common Make targets
+
+| Command | Purpose |
+|---|---|
+| `make setup` | Full setup: pull LFS, create DB, build image, start |
+| `make dev` / `make prod` | Start dev (single API) / prod (3 APIs + HAProxy) |
+| `make down` | Stop and remove containers |
+| `make shell` | Open an interactive shell inside the container |
+| `make logs` | Follow container logs |
+| `make status` | Show container status |
+| `make enrich COUNTRY=… STATE=…` | Run building enrichment only |
+| `make prepare-country COUNTRY=…` | Download & prepare data for a country |
+| `make dump-state STATE=…` / `make load-state STATE=…` | Dump / restore a processed state |
+| `make delete-dry-run COUNTRY=… STATE=…` | Preview deletion impact for a state |
+| `make run CMD="…"` | Run an arbitrary command in the container |
+| `make help` | List all available targets |
+
+Run `make help` for the complete, always-current list.
+
+---
+
+## Configuration
+
+Runtime behaviour is driven by:
+
+- **`.env.docker`** — deployment secrets and connection details
+  (`DBNAME`, `DBUSER`, `PASSWORD`, `HOST`, `PORT`, `TARGET_SCHEMA`,
+  `EP_ONLINE_API_KEY`).
+- **`config/*.yaml`** — application configuration: `config_database.yaml`,
+  `config_data.yaml`, `config_generation.yaml`, `config_analysis.yaml`,
+  `config_plotting.yaml`, `config_version.yaml`.
+
+Plotting uses Mapbox. Tokens are **not** committed — replace the
+`YOUR_MAPBOX_TOKEN` placeholder in `config/config_plotting.yaml` (and the
+`plotting/` modules) with your own Mapbox access token if you need the map
+backgrounds.
+
+---
+
+## Repository layout
+
+| Path | Contents |
+|---|---|
+| `api/` | FastAPI service: routers, Pydantic models, services, utils |
+| `src/` | Core pylovo library (grid generation, database, analysis) |
+| `datapipeline/` | Open-data ingestion and enrichment |
+| `config/` | YAML configuration and table-structure definitions |
+| `migrations/` | SQL database migrations |
+| `plotting/` | Grid/network plotting utilities |
+| `runme/` | Operational scripts (create / analyze / export / import / delete) |
+| `initial-data/` | Bootstrap/seed datasets |
+| `raw_data/` | Large input datasets (Git LFS) |
+| `docs/` | Documentation sources |
+| `haproxy/`, `nginx/` | Reverse-proxy / load-balancer configuration |
+| `QGIS/` | QGIS project templates |
+
+---
+
+## Documentation
+
+- **This fork's docs:** see `docs/` (Sphinx sources under `docs/source/`,
+  including the Enerplanet and REST API sections).
+- **Changes vs. upstream:** [CHANGELOG.md](CHANGELOG.md).
+- **Original pylovo:** [`tum-ens/pylovo`](https://github.com/tum-ens/pylovo).
+
+---
+
+## Attribution & citation
+
+This project is a fork of the original **pylovo** tool developed at the Chair of
+Renewable and Sustainable Energy Systems, Technical University of Munich
+([`tum-ens/pylovo`](https://github.com/tum-ens/pylovo)). If you use pylovo in
+academic work, please cite the original paper:
+
+> *Generation of low-voltage synthetic grid data for energy system modeling with
+> the pylovo tool.* Renewable and Sustainable Energy Reviews / ScienceDirect.
+> https://www.sciencedirect.com/science/article/pii/S2352467724003473
+
+See [CITATION.cff](CITATION.cff) for machine-readable citation metadata and
+[ATTRIBUTIONS.md](ATTRIBUTIONS.md) for third-party credits.
+
+## License
+
+See [LICENSE](LICENSE).

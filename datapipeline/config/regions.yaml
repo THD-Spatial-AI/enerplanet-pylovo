@@ -1,0 +1,945 @@
+# Germany States and European Countries Configuration
+# OSM relation IDs from: https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative
+
+germany:
+  name: "Germany"
+  osm_relation_id: 51477
+  crs: "EPSG:3035"
+  nuts_code: "DE"
+  geofabrik_url: "https://download.geofabrik.de/europe/germany-latest.osm.pbf"
+  states:
+    bayern:
+      name: "Bayern (Bavaria)"
+      osm_relation_id: 2145268
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/bayern-latest.osm.pbf"
+      nuts_code: "DE2"
+      ags: "9000000"
+
+    baden_wuerttemberg:
+      name: "Baden-Württemberg"
+      osm_relation_id: 62611
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/baden-wuerttemberg-latest.osm.pbf"
+      nuts_code: "DE1"
+      ags: "8000000"
+
+    berlin:
+      name: "Berlin"
+      osm_relation_id: 62422
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/berlin-latest.osm.pbf"
+      nuts_code: "DE3"
+      ags: "11000000"
+
+    brandenburg:
+      name: "Brandenburg"
+      osm_relation_id: 62504
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/brandenburg-latest.osm.pbf"
+      nuts_code: "DE4"
+      ags: "12000000"
+
+    bremen:
+      name: "Bremen"
+      osm_relation_id: 62718
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/bremen-latest.osm.pbf"
+      nuts_code: "DE5"
+      ags: "4000000"
+    
+    hamburg:
+      name: "Hamburg"
+      osm_relation_id: 62782
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/hamburg-latest.osm.pbf"
+      nuts_code: "DE6"
+      ags: "2000000"
+    
+    hessen:
+      name: "Hessen"
+      osm_relation_id: 62650
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/hessen-latest.osm.pbf"
+      nuts_code: "DE7"
+      ags: "6000000"
+
+    mecklenburg_vorpommern:
+      name: "Mecklenburg-Vorpommern"
+      osm_relation_id: 28322
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/mecklenburg-vorpommern-latest.osm.pbf"
+      nuts_code: "DE8"
+      ags: "13000000"
+
+    niedersachsen:
+      name: "Niedersachsen (Lower Saxony)"
+      osm_relation_id: 62771
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/niedersachsen-latest.osm.pbf"
+      nuts_code: "DE9"
+      ags: "3000000"
+
+    nordrhein_westfalen:
+      name: "Nordrhein-Westfalen (North Rhine-Westphalia)"
+      osm_relation_id: 62761
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/nordrhein-westfalen-latest.osm.pbf"
+      nuts_code: "DEA"
+      ags: "5000000"
+
+    rheinland_pfalz:
+      name: "Rheinland-Pfalz (Rhineland-Palatinate)"
+      osm_relation_id: 62341
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/rheinland-pfalz-latest.osm.pbf"
+      nuts_code: "DEB"
+      ags: "7000000"
+
+    saarland:
+      name: "Saarland"
+      osm_relation_id: 62372
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/saarland-latest.osm.pbf"
+      nuts_code: "DEC"
+      ags: "10000000"
+
+    sachsen:
+      name: "Sachsen (Saxony)"
+      osm_relation_id: 62467
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/sachsen-latest.osm.pbf"
+      nuts_code: "DED"
+      ags: "14000000"
+
+    sachsen_anhalt:
+      name: "Sachsen-Anhalt (Saxony-Anhalt)"
+      osm_relation_id: 62607
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/sachsen-anhalt-latest.osm.pbf"
+      nuts_code: "DEE"
+      ags: "15000000"
+
+    schleswig_holstein:
+      name: "Schleswig-Holstein"
+      osm_relation_id: 51529
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/schleswig-holstein-latest.osm.pbf"
+      nuts_code: "DEF"
+      ags: "1000000"
+
+    thueringen:
+      name: "Thüringen (Thuringia)"
+      osm_relation_id: 62366
+      geofabrik_url: "https://download.geofabrik.de/europe/germany/thueringen-latest.osm.pbf"
+      nuts_code: "DEG"
+      ags: "16000000"
+
+# European Countries
+austria:
+  name: "Austria"
+  osm_relation_id: 16239
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+  nuts_code: "AT"
+  states:
+    burgenland:
+      name: "Burgenland"
+      osm_relation_id: 76909
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT11"
+
+    kaernten:
+      name: "Kärnten (Carinthia)"
+      osm_relation_id: 52345
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT21"
+
+    niederoesterreich:
+      name: "Niederösterreich (Lower Austria)"
+      osm_relation_id: 77189
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT12"
+
+    oberoesterreich:
+      name: "Oberösterreich (Upper Austria)"
+      osm_relation_id: 102303
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT31"
+
+    salzburg:
+      name: "Salzburg"
+      osm_relation_id: 86539
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT32"
+
+    steiermark:
+      name: "Steiermark (Styria)"
+      osm_relation_id: 35183
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT22"
+
+    tirol:
+      name: "Tirol (Tyrol)"
+      osm_relation_id: 52343
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT33"
+
+    vorarlberg:
+      name: "Vorarlberg"
+      osm_relation_id: 74942
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT34"
+
+    wien:
+      name: "Wien (Vienna)"
+      osm_relation_id: 109166
+      geofabrik_url: "https://download.geofabrik.de/europe/austria-latest.osm.pbf"
+      nuts_code: "AT13"
+
+switzerland:
+  name: "Switzerland"
+  osm_relation_id: 51701
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/switzerland-latest.osm.pbf"
+  nuts_code: "CH"
+  states:
+    zurich:
+      name: "Zürich"
+      osm_relation_id: 1682181
+      nuts_code: "CH04"
+    bern:
+      name: "Bern / Berne"
+      osm_relation_id: 1682224
+      nuts_code: "CH02"
+    vaud:
+      name: "Vaud"
+      osm_relation_id: 1702420
+      nuts_code: "CH01"
+    geneve:
+      name: "Genève / Geneva"
+      osm_relation_id: 1702419
+      nuts_code: "CH01"
+    basel_stadt:
+      name: "Basel-Stadt"
+      osm_relation_id: 1683941
+      nuts_code: "CH03"
+    aargau:
+      name: "Aargau"
+      osm_relation_id: 1686355
+      nuts_code: "CH03"
+    ticino:
+      name: "Ticino"
+      osm_relation_id: 1687006
+      nuts_code: "CH07"
+
+france:
+  name: "France"
+  osm_relation_id: 2202162
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/france-latest.osm.pbf"
+  nuts_code: "FR"
+  states:
+    ile_de_france:
+      name: "Île-de-France (Paris)"
+      osm_relation_id: 8649
+      geofabrik_url: "https://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf"
+      nuts_code: "FR10"
+    auvergne_rhone_alpes:
+      name: "Auvergne-Rhône-Alpes"
+      osm_relation_id: 3792877
+      geofabrik_url: "https://download.geofabrik.de/europe/france/rhone-alpes-latest.osm.pbf"
+      nuts_code: "FRK"
+    provence_alpes_cote_d_azur:
+      name: "Provence-Alpes-Côte d'Azur"
+      osm_relation_id: 8654
+      geofabrik_url: "https://download.geofabrik.de/europe/france/provence-alpes-cote-d-azur-latest.osm.pbf"
+      nuts_code: "FRL"
+    occitanie:
+      name: "Occitanie"
+      osm_relation_id: 3792883
+      geofabrik_url: "https://download.geofabrik.de/europe/france/languedoc-roussillon-latest.osm.pbf"
+      nuts_code: "FRJ"
+    nouvelle_aquitaine:
+      name: "Nouvelle-Aquitaine"
+      osm_relation_id: 3792881
+      geofabrik_url: "https://download.geofabrik.de/europe/france/aquitaine-latest.osm.pbf"
+      nuts_code: "FRI"
+    hauts_de_france:
+      name: "Hauts-de-France"
+      osm_relation_id: 4217435
+      geofabrik_url: "https://download.geofabrik.de/europe/france/nord-pas-de-calais-latest.osm.pbf"
+      nuts_code: "FRE"
+    grand_est:
+      name: "Grand Est"
+      osm_relation_id: 3792876
+      geofabrik_url: "https://download.geofabrik.de/europe/france/alsace-latest.osm.pbf"
+      nuts_code: "FRF"
+    bretagne:
+      name: "Bretagne"
+      osm_relation_id: 102740
+      geofabrik_url: "https://download.geofabrik.de/europe/france/bretagne-latest.osm.pbf"
+      nuts_code: "FRH"
+    pays_de_la_loire:
+      name: "Pays de la Loire"
+      osm_relation_id: 8653
+      geofabrik_url: "https://download.geofabrik.de/europe/france/pays-de-la-loire-latest.osm.pbf"
+      nuts_code: "FRG"
+    normandie:
+      name: "Normandie"
+      osm_relation_id: 3792880
+      geofabrik_url: "https://download.geofabrik.de/europe/france/basse-normandie-latest.osm.pbf"
+      nuts_code: "FRD"
+
+netherlands:
+  name: "Netherlands"
+  osm_relation_id: 47796
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/netherlands-latest.osm.pbf"
+  nuts_code: "NL"
+  states:
+    drenthe:
+      name: "Drenthe"
+      osm_relation_id: 47540
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/drenthe-latest.osm.pbf"
+      nuts_code: "NL13"
+
+    flevoland:
+      name: "Flevoland"
+      osm_relation_id: 47407
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/flevoland-latest.osm.pbf"
+      nuts_code: "NL23"
+
+    friesland:
+      name: "Friesland"
+      osm_relation_id: 47381
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/friesland-latest.osm.pbf"
+      nuts_code: "NL12"
+
+    gelderland:
+      name: "Gelderland"
+      osm_relation_id: 47554
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/gelderland-latest.osm.pbf"
+      nuts_code: "NL22"
+
+    groningen:
+      name: "Groningen"
+      osm_relation_id: 47826
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/groningen-latest.osm.pbf"
+      nuts_code: "NL11"
+
+    limburg:
+      name: "Limburg"
+      osm_relation_id: 47793
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/limburg-latest.osm.pbf"
+      nuts_code: "NL42"
+
+    noord_brabant:
+      name: "Noord-Brabant"
+      osm_relation_id: 47696
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/noord-brabant-latest.osm.pbf"
+      nuts_code: "NL41"
+
+    noord_holland:
+      name: "Noord-Holland"
+      osm_relation_id: 47654
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/noord-holland-latest.osm.pbf"
+      nuts_code: "NL32"
+
+    overijssel:
+      name: "Overijssel"
+      osm_relation_id: 47608
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/overijssel-latest.osm.pbf"
+      nuts_code: "NL21"
+
+    utrecht:
+      name: "Utrecht"
+      osm_relation_id: 47667
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/utrecht-latest.osm.pbf"
+      nuts_code: "NL31"
+
+    zeeland:
+      name: "Zeeland"
+      osm_relation_id: 47806
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/zeeland-latest.osm.pbf"
+      nuts_code: "NL34"
+
+    zuid_holland:
+      name: "Zuid-Holland"
+      osm_relation_id: 47772
+      geofabrik_url: "https://download.geofabrik.de/europe/netherlands/zuid-holland-latest.osm.pbf"
+      nuts_code: "NL33"
+
+belgium:
+  name: "Belgium"
+  osm_relation_id: 52411
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/belgium-latest.osm.pbf"
+  nuts_code: "BE"
+  states:
+    brussels:
+      name: "Bruxelles-Capitale / Brussels Hoofdstedelijk"
+      osm_relation_id: 54094
+      nuts_code: "BE10"
+    antwerpen:
+      name: "Antwerpen"
+      osm_relation_id: 53114
+      nuts_code: "BE21"
+    vlaams_brabant:
+      name: "Vlaams-Brabant"
+      osm_relation_id: 58004
+      nuts_code: "BE24"
+    oost_vlaanderen:
+      name: "Oost-Vlaanderen"
+      osm_relation_id: 53127
+      nuts_code: "BE23"
+    west_vlaanderen:
+      name: "West-Vlaanderen"
+      osm_relation_id: 416271
+      nuts_code: "BE25"
+    limburg_be:
+      name: "Limburg"
+      osm_relation_id: 53142
+      nuts_code: "BE22"
+    liege:
+      name: "Liège"
+      osm_relation_id: 1407192
+      nuts_code: "BE33"
+    hainaut:
+      name: "Hainaut"
+      osm_relation_id: 1294621
+      nuts_code: "BE32"
+    namur:
+      name: "Namur"
+      osm_relation_id: 1311816
+      nuts_code: "BE35"
+    luxembourg_be:
+      name: "Luxembourg"
+      osm_relation_id: 1310874
+      nuts_code: "BE34"
+    walloon_brabant:
+      name: "Brabant wallon"
+      osm_relation_id: 1294762
+      nuts_code: "BE31"
+
+poland:
+  name: "Poland"
+  osm_relation_id: 49715
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/poland-latest.osm.pbf"
+  nuts_code: "PL"
+  states:
+    mazowieckie:
+      name: "Mazowieckie (Warsaw)"
+      osm_relation_id: 130919
+      geofabrik_url: "https://download.geofabrik.de/europe/poland/mazowieckie-latest.osm.pbf"
+      nuts_code: "PL12"
+    malopolskie:
+      name: "Małopolskie (Kraków)"
+      osm_relation_id: 224457
+      geofabrik_url: "https://download.geofabrik.de/europe/poland/malopolskie-latest.osm.pbf"
+      nuts_code: "PL21"
+    wielkopolskie:
+      name: "Wielkopolskie (Poznań)"
+      osm_relation_id: 130935
+      geofabrik_url: "https://download.geofabrik.de/europe/poland/wielkopolskie-latest.osm.pbf"
+      nuts_code: "PL41"
+    dolnoslaskie:
+      name: "Dolnośląskie (Wrocław)"
+      osm_relation_id: 224458
+      geofabrik_url: "https://download.geofabrik.de/europe/poland/dolnoslaskie-latest.osm.pbf"
+      nuts_code: "PL51"
+    slaskie:
+      name: "Śląskie (Katowice)"
+      osm_relation_id: 224460
+      geofabrik_url: "https://download.geofabrik.de/europe/poland/slaskie-latest.osm.pbf"
+      nuts_code: "PL22"
+    pomorskie:
+      name: "Pomorskie (Gdańsk)"
+      osm_relation_id: 130975
+      geofabrik_url: "https://download.geofabrik.de/europe/poland/pomorskie-latest.osm.pbf"
+      nuts_code: "PL63"
+
+czech_republic:
+  name: "Czech Republic"
+  osm_relation_id: 51684
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/czech-republic-latest.osm.pbf"
+  nuts_code: "CZ"
+  states:
+    praha:
+      name: "Praha (Prague)"
+      osm_relation_id: 435514
+      nuts_code: "CZ010"
+    stredocesky:
+      name: "Středočeský kraj"
+      osm_relation_id: 442397
+      nuts_code: "CZ020"
+    jihocesky:
+      name: "Jihočeský kraj"
+      osm_relation_id: 442321
+      nuts_code: "CZ031"
+    plzensky:
+      name: "Plzeňský kraj"
+      osm_relation_id: 442466
+      nuts_code: "CZ032"
+    karlovarsky:
+      name: "Karlovarský kraj"
+      osm_relation_id: 442314
+      nuts_code: "CZ041"
+    ustecky:
+      name: "Ústecký kraj"
+      osm_relation_id: 442452
+      nuts_code: "CZ042"
+    liberecky:
+      name: "Liberecký kraj"
+      osm_relation_id: 442455
+      nuts_code: "CZ051"
+    kralovehradecky:
+      name: "Královéhradecký kraj"
+      osm_relation_id: 442463
+      nuts_code: "CZ052"
+    pardubicky:
+      name: "Pardubický kraj"
+      osm_relation_id: 442460
+      nuts_code: "CZ053"
+    vysocina:
+      name: "Kraj Vysočina"
+      osm_relation_id: 442453
+      nuts_code: "CZ063"
+    jihomoravsky:
+      name: "Jihomoravský kraj"
+      osm_relation_id: 442311
+      nuts_code: "CZ064"
+    olomoucky:
+      name: "Olomoucký kraj"
+      osm_relation_id: 442459
+      nuts_code: "CZ071"
+    zlinsky:
+      name: "Zlínský kraj"
+      osm_relation_id: 442449
+      nuts_code: "CZ072"
+    moravskoslezsky:
+      name: "Moravskoslezský kraj"
+      osm_relation_id: 442461
+      nuts_code: "CZ080"
+
+italy:
+  name: "Italy"
+  osm_relation_id: 365331
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/italy-latest.osm.pbf"
+  nuts_code: "IT"
+  states:
+    lombardia:
+      name: "Lombardia"
+      osm_relation_id: 44879
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/nord-ovest-latest.osm.pbf"
+      nuts_code: "ITC4"
+    lazio:
+      name: "Lazio (Rome)"
+      osm_relation_id: 40784
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/centro-latest.osm.pbf"
+      nuts_code: "ITI4"
+    veneto:
+      name: "Veneto"
+      osm_relation_id: 43648
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/nord-est-latest.osm.pbf"
+      nuts_code: "ITH3"
+    emilia_romagna:
+      name: "Emilia-Romagna"
+      osm_relation_id: 42611
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/nord-est-latest.osm.pbf"
+      nuts_code: "ITH5"
+    piemonte:
+      name: "Piemonte"
+      osm_relation_id: 44874
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/nord-ovest-latest.osm.pbf"
+      nuts_code: "ITC1"
+    toscana:
+      name: "Toscana"
+      osm_relation_id: 41977
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/centro-latest.osm.pbf"
+      nuts_code: "ITI1"
+    campania:
+      name: "Campania (Naples)"
+      osm_relation_id: 40218
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/sud-latest.osm.pbf"
+      nuts_code: "ITF3"
+    sicilia:
+      name: "Sicilia"
+      osm_relation_id: 39152
+      geofabrik_url: "https://download.geofabrik.de/europe/italy/isole-latest.osm.pbf"
+      nuts_code: "ITG1"
+
+spain:
+  name: "Spain"
+  osm_relation_id: 1311341
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/spain-latest.osm.pbf"
+  nuts_code: "ES"
+  states:
+    cataluna:
+      name: "Cataluña (Catalonia)"
+      osm_relation_id: 349053
+      nuts_code: "ES51"
+    madrid:
+      name: "Comunidad de Madrid"
+      osm_relation_id: 349055
+      nuts_code: "ES30"
+    andalucia:
+      name: "Andalucía"
+      osm_relation_id: 349050
+      nuts_code: "ES61"
+    comunidad_valenciana:
+      name: "Comunidad Valenciana"
+      osm_relation_id: 349054
+      nuts_code: "ES52"
+    galicia:
+      name: "Galicia"
+      osm_relation_id: 349036
+      nuts_code: "ES11"
+    pais_vasco:
+      name: "País Vasco (Basque Country)"
+      osm_relation_id: 349042
+      nuts_code: "ES21"
+    castilla_y_leon:
+      name: "Castilla y León"
+      osm_relation_id: 349041
+      nuts_code: "ES41"
+
+denmark:
+  name: "Denmark"
+  osm_relation_id: 50046
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/denmark-latest.osm.pbf"
+  nuts_code: "DK"
+  states:
+    hovedstaden:
+      name: "Hovedstaden (Capital Region)"
+      osm_relation_id: 2086117
+      nuts_code: "DK01"
+    midtjylland:
+      name: "Midtjylland (Central Denmark)"
+      osm_relation_id: 2086111
+      nuts_code: "DK04"
+    nordjylland:
+      name: "Nordjylland (North Denmark)"
+      osm_relation_id: 2086116
+      nuts_code: "DK05"
+    sjaelland:
+      name: "Sjælland (Zealand)"
+      osm_relation_id: 2086115
+      nuts_code: "DK02"
+    syddanmark:
+      name: "Syddanmark (Southern Denmark)"
+      osm_relation_id: 2086114
+      nuts_code: "DK03"
+
+sweden:
+  name: "Sweden"
+  osm_relation_id: 52822
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/sweden-latest.osm.pbf"
+  nuts_code: "SE"
+  states:
+    stockholm:
+      name: "Stockholms län"
+      osm_relation_id: 54391
+      nuts_code: "SE11"
+    vastra_gotaland:
+      name: "Västra Götalands län"
+      osm_relation_id: 54386
+      nuts_code: "SE23"
+    skane:
+      name: "Skåne län"
+      osm_relation_id: 54403
+      nuts_code: "SE22"
+    ostergotland:
+      name: "Östergötlands län"
+      osm_relation_id: 940675
+      nuts_code: "SE12"
+
+norway:
+  name: "Norway"
+  osm_relation_id: 2978650
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/norway-latest.osm.pbf"
+  nuts_code: "NO"
+  states:
+    oslo:
+      name: "Oslo"
+      osm_relation_id: 406091
+      nuts_code: "NO01"
+    viken:
+      name: "Viken"
+      osm_relation_id: 10179347
+      nuts_code: "NO03"
+    vestland:
+      name: "Vestland"
+      osm_relation_id: 10180607
+      nuts_code: "NO05"
+    rogaland:
+      name: "Rogaland"
+      osm_relation_id: 405836
+      nuts_code: "NO04"
+    trondelag:
+      name: "Trøndelag"
+      osm_relation_id: 6453960
+      nuts_code: "NO06"
+
+finland:
+  name: "Finland"
+  osm_relation_id: 54224
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/finland-latest.osm.pbf"
+  nuts_code: "FI"
+  states:
+    uusimaa:
+      name: "Uusimaa"
+      osm_relation_id: 1650407
+      nuts_code: "FI1B"
+    pirkanmaa:
+      name: "Pirkanmaa"
+      osm_relation_id: 1650500
+      nuts_code: "FI19"
+    varsinais_suomi:
+      name: "Varsinais-Suomi"
+      osm_relation_id: 1650549
+      nuts_code: "FI1C"
+
+iceland:
+  name: "Iceland"
+  osm_relation_id: 299133
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/iceland-latest.osm.pbf"
+  nuts_code: "IS"
+  states:
+    hofudborgarsvaedi:
+      name: "Höfuðborgarsvæðið (Capital Region)"
+      osm_relation_id: 2580586
+      nuts_code: "IS00"
+
+ireland:
+  name: "Ireland"
+  osm_relation_id: 62273
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/ireland-and-northern-ireland-latest.osm.pbf"
+  nuts_code: "IE"
+  states:
+    dublin:
+      name: "Dublin"
+      osm_relation_id: 278269
+      nuts_code: "IE06"
+    cork:
+      name: "Cork"
+      osm_relation_id: 278291
+      nuts_code: "IE04"
+    galway:
+      name: "Galway"
+      osm_relation_id: 278295
+      nuts_code: "IE05"
+
+united_kingdom:
+  name: "United Kingdom"
+  osm_relation_id: 62149
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/great-britain-latest.osm.pbf"
+  nuts_code: "GB"
+  states:
+    england:
+      name: "England"
+      osm_relation_id: 58447
+      geofabrik_url: "https://download.geofabrik.de/europe/great-britain/england-latest.osm.pbf"
+      nuts_code: "UKC-UKK"
+    scotland:
+      name: "Scotland"
+      osm_relation_id: 58446
+      geofabrik_url: "https://download.geofabrik.de/europe/great-britain/scotland-latest.osm.pbf"
+      nuts_code: "UKM"
+    wales:
+      name: "Wales"
+      osm_relation_id: 58437
+      geofabrik_url: "https://download.geofabrik.de/europe/great-britain/wales-latest.osm.pbf"
+      nuts_code: "UKL"
+
+# Southern Europe
+portugal:
+  name: "Portugal"
+  osm_relation_id: 295480
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/portugal-latest.osm.pbf"
+  nuts_code: "PT"
+  states:
+    lisboa:
+      name: "Lisboa"
+      osm_relation_id: 5765883
+      nuts_code: "PT17"
+    porto:
+      name: "Porto"
+      osm_relation_id: 3459013
+      nuts_code: "PT11"
+    algarve:
+      name: "Algarve"
+      osm_relation_id: 3459024
+      nuts_code: "PT15"
+
+greece:
+  name: "Greece"
+  osm_relation_id: 192307
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/greece-latest.osm.pbf"
+  nuts_code: "GR"
+  states:
+    attiki:
+      name: "Attiki (Attica)"
+      osm_relation_id: 1137890
+      nuts_code: "EL30"
+    kentriki_makedonia:
+      name: "Kentriki Makedonia (Central Macedonia)"
+      osm_relation_id: 1137913
+      nuts_code: "EL52"
+
+# Eastern Europe
+slovakia:
+  name: "Slovakia"
+  osm_relation_id: 14296
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/slovakia-latest.osm.pbf"
+  nuts_code: "SK"
+  states:
+    bratislava:
+      name: "Bratislavský kraj"
+      osm_relation_id: 388267
+      nuts_code: "SK01"
+    kosice:
+      name: "Košický kraj"
+      osm_relation_id: 388275
+      nuts_code: "SK04"
+
+hungary:
+  name: "Hungary"
+  osm_relation_id: 21335
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/hungary-latest.osm.pbf"
+  nuts_code: "HU"
+  states:
+    budapest:
+      name: "Budapest"
+      osm_relation_id: 65063
+      nuts_code: "HU11"
+    pest:
+      name: "Pest"
+      osm_relation_id: 65062
+      nuts_code: "HU12"
+
+romania:
+  name: "Romania"
+  osm_relation_id: 90689
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/romania-latest.osm.pbf"
+  nuts_code: "RO"
+  states:
+    bucuresti:
+      name: "București"
+      osm_relation_id: 1353096
+      nuts_code: "RO32"
+    cluj:
+      name: "Cluj"
+      osm_relation_id: 72296
+      nuts_code: "RO11"
+
+bulgaria:
+  name: "Bulgaria"
+  osm_relation_id: 186382
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/bulgaria-latest.osm.pbf"
+  nuts_code: "BG"
+  states:
+    sofia:
+      name: "Sofia"
+      osm_relation_id: 392422
+      nuts_code: "BG41"
+    plovdiv:
+      name: "Plovdiv"
+      osm_relation_id: 392414
+      nuts_code: "BG42"
+
+slovenia:
+  name: "Slovenia"
+  osm_relation_id: 218657
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/slovenia-latest.osm.pbf"
+  nuts_code: "SI"
+  states:
+    ljubljana:
+      name: "Osrednjeslovenska (Ljubljana)"
+      osm_relation_id: 1674632
+      nuts_code: "SI04"
+
+croatia:
+  name: "Croatia"
+  osm_relation_id: 214885
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/croatia-latest.osm.pbf"
+  nuts_code: "HR"
+  states:
+    zagreb:
+      name: "Grad Zagreb"
+      osm_relation_id: 2193273
+      nuts_code: "HR04"
+    split:
+      name: "Splitsko-dalmatinska"
+      osm_relation_id: 388279
+      nuts_code: "HR03"
+
+serbia:
+  name: "Serbia"
+  osm_relation_id: 1741311
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/serbia-latest.osm.pbf"
+  nuts_code: "RS"
+  states:
+    beograd:
+      name: "Beograd (Belgrade)"
+      osm_relation_id: 1677007
+      nuts_code: "RS11"
+
+# Baltic States
+estonia:
+  name: "Estonia"
+  osm_relation_id: 79510
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/estonia-latest.osm.pbf"
+  nuts_code: "EE"
+  states:
+    tallinn:
+      name: "Harju (Tallinn)"
+      osm_relation_id: 2169540
+      nuts_code: "EE00"
+
+latvia:
+  name: "Latvia"
+  osm_relation_id: 72594
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/latvia-latest.osm.pbf"
+  nuts_code: "LV"
+  states:
+    riga:
+      name: "Rīga"
+      osm_relation_id: 64513
+      nuts_code: "LV00"
+
+lithuania:
+  name: "Lithuania"
+  osm_relation_id: 72596
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/lithuania-latest.osm.pbf"
+  nuts_code: "LT"
+  states:
+    vilnius:
+      name: "Vilniaus apskritis"
+      osm_relation_id: 1529579
+      nuts_code: "LT01"
+    kaunas:
+      name: "Kauno apskritis"
+      osm_relation_id: 1529581
+      nuts_code: "LT02"
+
+# Expanded country details
+luxembourg:
+  name: "Luxembourg"
+  osm_relation_id: 2171347
+  crs: "EPSG:3035"
+  geofabrik_url: "https://download.geofabrik.de/europe/luxembourg-latest.osm.pbf"
+  nuts_code: "LU"
+  states:
+    luxembourg_city:
+      name: "Luxembourg"
+      osm_relation_id: 407489
+      nuts_code: "LU00"

@@ -1,0 +1,38 @@
+services:
+  # Single PyLovo API (no HAProxy for local dev)
+  # Reuses postgres + redis from enerplanet (spatialhub-net)
+  pylovo-api:
+    build: .
+    container_name: pylovo-api-dev
+    ports:
+      - "8086:8086"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env.docker
+    volumes:
+      - ./raw_data:/app/raw_data
+      - ./api:/app/api:ro
+      - ./src:/app/src:ro
+      - ./runme:/app/runme:ro
+      - ./datapipeline:/app/datapipeline:ro
+      - ./datapipeline/cache:/app/datapipeline/cache
+      - ./config:/app/config:ro
+    environment:
+      - HOST=postgres
+      - PORT=5432
+      - DBNAME=pylovo_db
+      - DBUSER=postgres
+      - PASSWORD=postgres
+      - TARGET_SCHEMA=public
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - WORKER_ID=1
+    restart: unless-stopped
+    networks:
+      - spatialhub-net
+    command: ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8086", "--workers", "4"]
+
+networks:
+  spatialhub-net:
+    external: true

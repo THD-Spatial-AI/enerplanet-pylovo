@@ -1,0 +1,39 @@
+# Data pipeline settings
+
+# Output directories
+# Note: base_dir is relative to PROJECT ROOT, not datapipeline directory
+# This ensures data is placed in raw_data/ where main_constructor expects it
+output:
+  base_dir: "../raw_data"
+  transformers_dir: "transformers"
+  buildings_dir: "buildings"
+  ways_dir: "ways"
+  boundaries_dir: "boundaries"
+
+# Download settings
+download:
+  max_retries: 3
+  timeout: 300  # seconds
+  chunk_size: 8192
+  parallel_downloads: 4
+
+# Geofabrik settings (primary data source)
+geofabrik:
+  base_url: "https://download.geofabrik.de"
+  use_cache: true  # Reuse downloaded PBF files
+  cache_dir: "cache/pbf"  # Where to store downloaded PBF files
+
+# osm2po settings
+osm2po:
+  java_heap_size: "4G"
+  download_url: "https://osm2po.de/releases/osm2po-5.5.11.zip"
+
+# Processing settings
+processing:
+  target_crs: "EPSG:3035"
+  simplify_tolerance: 0.0001
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

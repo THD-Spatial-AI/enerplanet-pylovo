@@ -1,0 +1,357 @@
+# =============================================================================
+# REGIONAL CONFIGURATION
+# =============================================================================
+PLZ: 86150
+# AGS: 9474126
+# PLZ: [86150, 86152] # Augsburg: [86150, 86152, 86153, 86154, 86156, 86157, 86159, 86161, 86163, 86165, 86167, 86169, 86179, 86199]
+# AGS: [9162000, 9163000, 9164000]
+TESTING: False # If True, only a small subset of data is used for faster testing
+
+# =============================================================================
+# EXECUTION CONFIGURATION
+# =============================================================================
+PARALLEL: False # Toggles whether the grid generation uses multiple workers in parallel
+N_JOBS_PERCENT: 60  # Percentage of CPU cores to use for parallel grid generation
+ANALYZE_GRIDS: True # Toggles analysis after grid generation (basic parameters, trafo analysis, cable counting)
+SAVE_GRID_FOLDER: False # Toggles whether the grid json files will be saved in a folder or just in the db
+LOG_LEVEL: INFO #DEBUG, INFO, ERROR - Logging configurations
+RESULT_DIR: results # Directory for storing analysis results and outputs
+
+# Electrical backend configuration
+# Options: 'pandapower', 'opendss'
+ELECTRICAL_BACKEND: pandapower
+
+# =============================================================================
+# GRID GENERATION CONFIGURATION
+# =============================================================================
+VERSION_ID: "1" # Change version if you changed any grid parameters or queries (e.g. transformer query)
+VERSION_COMMENT: base version # State here which parameters, queries are used to compute the grids with current VERSION_ID
+PEAK_LOAD_HOUSEHOLD: 14.50 # default: 14.5kW, 30 kW if electric hot water supply is included
+SIM_FACTOR: {residential: 0.07, public: 0.60, commercial: 0.50, industrial: 0.60, agricultural: 0.60, infrastructure: 0.60} # Simultaneous load factor per parent_category
+DEFAULT_POWER_FACTOR: 0.95  # cos(phi) for residential loads
+AUTO_REGISTER_MISSING_F_CLASSES: True  # Auto-create consumer_categories rows for unseen f_class values
+F_CLASS_AUDIT_WARN_THRESHOLD: 0.001  # Warn if uncovered building share exceeds 0.1%
+F_CLASS_AUDIT_FAIL_THRESHOLD: 0.01  # Fail if uncovered building share exceeds 1%
+F_CLASS_AUDIT_TOP_N: 25  # Print top-N uncovered f_class values in audit logs
+
+# Consumer categories for load calculation — one entry per OSM f_class
+# load_method: "household" = peak_load × households_per_building, "area" = peak_load_per_m2 × area / 1000
+# parent_category: groups f_classes for simultaneity calculation (residential/commercial/public/industrial/agricultural/infrastructure)
+# Peak load values from VDI 3807, DIN 18599, EnEV, and German grid planning standards
+CONSUMER_CATEGORIES:
+  # ── Residential (household-based load calculation) ──
+  # Baseline yearly household values were updated to modern Germany benchmarks
+  # (Destatis + Stromspiegel guidance) to avoid the old 2010-era overestimation.
+  - {consumer_category_id: 1,   definition: house,              load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 2,   definition: detached,           load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 3,   definition: apartments,         load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3221,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 4,   definition: residential,        load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 5,   definition: semidetached_house, load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 6,   definition: terrace,            load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 7,   definition: dormitory,          load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 8,   definition: bungalow,           load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 9,   definition: farmhouse,          load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 4000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 10,  definition: cabin,              load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2500,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 11,  definition: hut,                load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 1500,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 12,  definition: static_caravan,     load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2500,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 13,  definition: ger,                load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 1500,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 14,  definition: trullo,             load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2500,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 15,  definition: tree_house,         load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 1000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 16,  definition: boathouse,          load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 17,  definition: boat_house,         load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 18,  definition: houseboat,          load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 19,  definition: shed,               load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 500,   peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 20,  definition: outbuilding,        load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 1000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 21,  definition: summer_house,       load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 2000,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  # ── Commercial (area-based load calculation) ──
+  - {consumer_category_id: 30,  definition: commercial,         load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 79.00, yearly_consumption_per_m2: 245.70, sim_factor: 0.50}
+  - {consumer_category_id: 31,  definition: retail,             load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 90.00, yearly_consumption_per_m2: 280.00, sim_factor: 0.50}
+  - {consumer_category_id: 32,  definition: office,             load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 55.00, yearly_consumption_per_m2: 170.00, sim_factor: 0.50}
+  - {consumer_category_id: 33,  definition: supermarket,        load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 120.00, yearly_consumption_per_m2: 400.00, sim_factor: 0.50}
+  - {consumer_category_id: 34,  definition: shop,               load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 85.00, yearly_consumption_per_m2: 260.00, sim_factor: 0.50}
+  - {consumer_category_id: 35,  definition: mall,               load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 110.00, yearly_consumption_per_m2: 350.00, sim_factor: 0.50}
+  - {consumer_category_id: 36,  definition: kiosk,              load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 70.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.50}
+  - {consumer_category_id: 37,  definition: store,              load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 85.00, yearly_consumption_per_m2: 260.00, sim_factor: 0.50}
+  - {consumer_category_id: 38,  definition: marketplace,        load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 39,  definition: hotel,              load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 80.00, yearly_consumption_per_m2: 250.00, sim_factor: 0.50}
+  - {consumer_category_id: 40,  definition: motel,              load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 65.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.50}
+  - {consumer_category_id: 41,  definition: hostel,             load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.50}
+  - {consumer_category_id: 42,  definition: guest_house,        load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 55.00, yearly_consumption_per_m2: 170.00, sim_factor: 0.50}
+  - {consumer_category_id: 43,  definition: restaurant,         load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 150.00, yearly_consumption_per_m2: 500.00, sim_factor: 0.50}
+  - {consumer_category_id: 44,  definition: cafe,               load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 100.00, yearly_consumption_per_m2: 300.00, sim_factor: 0.50}
+  - {consumer_category_id: 45,  definition: pub,                load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 100.00, yearly_consumption_per_m2: 300.00, sim_factor: 0.50}
+  - {consumer_category_id: 46,  definition: bar,                load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 100.00, yearly_consumption_per_m2: 300.00, sim_factor: 0.50}
+  - {consumer_category_id: 47,  definition: fast_food,          load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 180.00, yearly_consumption_per_m2: 600.00, sim_factor: 0.50}
+  - {consumer_category_id: 48,  definition: bakehouse,          load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 160.00, yearly_consumption_per_m2: 500.00, sim_factor: 0.50}
+  - {consumer_category_id: 49,  definition: bakery,             load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 160.00, yearly_consumption_per_m2: 500.00, sim_factor: 0.50}
+  - {consumer_category_id: 50,  definition: bank,               load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 60.00, yearly_consumption_per_m2: 190.00, sim_factor: 0.50}
+  - {consumer_category_id: 51,  definition: pharmacy,           load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 70.00, yearly_consumption_per_m2: 220.00, sim_factor: 0.50}
+  # ── Industrial (area-based load calculation) ──
+  - {consumer_category_id: 60,  definition: industrial,         load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 61,  definition: warehouse,          load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 62,  definition: factory,            load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 70.00, yearly_consumption_per_m2: 280.00, sim_factor: 0.60}
+  - {consumer_category_id: 63,  definition: manufacture,        load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 60.00, yearly_consumption_per_m2: 240.00, sim_factor: 0.60}
+  - {consumer_category_id: 64,  definition: storage_tank,       load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  - {consumer_category_id: 65,  definition: silo,               load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  - {consumer_category_id: 66,  definition: slurry_tank,        load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 15.00,  sim_factor: 0.60}
+  - {consumer_category_id: 67,  definition: digester,           load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  - {consumer_category_id: 68,  definition: container,          load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 69,  definition: construction,       load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  - {consumer_category_id: 70,  definition: works,              load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 55.00, yearly_consumption_per_m2: 220.00, sim_factor: 0.60}
+  - {consumer_category_id: 71,  definition: workshop,           load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 45.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.60}
+  - {consumer_category_id: 72,  definition: brewery,            load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 80.00, yearly_consumption_per_m2: 320.00, sim_factor: 0.60}
+  - {consumer_category_id: 73,  definition: winery,             load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.60}
+  - {consumer_category_id: 74,  definition: oil_mill,           load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 75,  definition: sawmill,            load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 55.00, yearly_consumption_per_m2: 220.00, sim_factor: 0.60}
+  - {consumer_category_id: 76,  definition: watermill,          load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 77,  definition: windmill,           load_method: area, parent_category: industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  # ── Public (area-based load calculation) ──
+  - {consumer_category_id: 80,  definition: public,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 29.00, yearly_consumption_per_m2: 155.70, sim_factor: 0.60}
+  - {consumer_category_id: 81,  definition: civic,              load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 170.00, sim_factor: 0.60}
+  - {consumer_category_id: 82,  definition: government,         load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.60}
+  - {consumer_category_id: 83,  definition: hospital,           load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 120.00, yearly_consumption_per_m2: 450.00, sim_factor: 0.60}
+  - {consumer_category_id: 84,  definition: school,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  - {consumer_category_id: 85,  definition: university,         load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 45.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 86,  definition: kindergarten,       load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 130.00, sim_factor: 0.60}
+  - {consumer_category_id: 87,  definition: church,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 40.00,  sim_factor: 0.60}
+  - {consumer_category_id: 88,  definition: chapel,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 8.00,  yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  - {consumer_category_id: 89,  definition: mosque,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  - {consumer_category_id: 90,  definition: temple,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 12.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 91,  definition: cathedral,          load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 12.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 92,  definition: synagogue,          load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 12.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 93,  definition: shrine,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 20.00,  sim_factor: 0.60}
+  - {consumer_category_id: 94,  definition: monastery,          load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 90.00,  sim_factor: 0.60}
+  - {consumer_category_id: 95,  definition: library,            load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 150.00, sim_factor: 0.60}
+  - {consumer_category_id: 96,  definition: museum,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 130.00, sim_factor: 0.60}
+  - {consumer_category_id: 97,  definition: theatre,            load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 170.00, sim_factor: 0.60}
+  - {consumer_category_id: 98,  definition: cinema,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 99,  definition: community_centre,   load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 110.00, sim_factor: 0.60}
+  - {consumer_category_id: 100, definition: fire_station,       load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 150.00, sim_factor: 0.60}
+  - {consumer_category_id: 101, definition: police,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 170.00, sim_factor: 0.60}
+  - {consumer_category_id: 102, definition: townhall,           load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 155.00, sim_factor: 0.60}
+  - {consumer_category_id: 103, definition: courthouse,         load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 155.00, sim_factor: 0.60}
+  - {consumer_category_id: 104, definition: embassy,            load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.60}
+  - {consumer_category_id: 105, definition: sports_hall,        load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 130.00, sim_factor: 0.60}
+  - {consumer_category_id: 106, definition: stadium,            load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.60}
+  - {consumer_category_id: 107, definition: grandstand,         load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  - {consumer_category_id: 108, definition: pavilion,           load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 109, definition: sports_centre,      load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 170.00, sim_factor: 0.60}
+  - {consumer_category_id: 110, definition: toilets,            load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 111, definition: public_bath,        load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 60.00, yearly_consumption_per_m2: 250.00, sim_factor: 0.60}
+  - {consumer_category_id: 112, definition: shelter,            load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 20.00,  sim_factor: 0.60}
+  - {consumer_category_id: 113, definition: healthcare,         load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 80.00, yearly_consumption_per_m2: 350.00, sim_factor: 0.60}
+  - {consumer_category_id: 114, definition: clinic,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 80.00, yearly_consumption_per_m2: 350.00, sim_factor: 0.60}
+  - {consumer_category_id: 115, definition: nursing_home,       load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 116, definition: social_facility,    load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 130.00, sim_factor: 0.60}
+  - {consumer_category_id: 117, definition: prison,             load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 45.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 118, definition: military,           load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.60}
+  - {consumer_category_id: 119, definition: religious,          load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 40.00,  sim_factor: 0.60}
+  - {consumer_category_id: 120, definition: college,            load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.60}
+  - {consumer_category_id: 121, definition: training,           load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 150.00, sim_factor: 0.60}
+  # ── Agricultural (area-based load calculation) ──
+  - {consumer_category_id: 130, definition: farm,               load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 131, definition: barn,               load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  - {consumer_category_id: 132, definition: cowshed,            load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 133, definition: stable,             load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 12.00, yearly_consumption_per_m2: 40.00,  sim_factor: 0.60}
+  - {consumer_category_id: 134, definition: sty,                load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 135, definition: greenhouse,         load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.60}
+  - {consumer_category_id: 136, definition: farm_auxiliary,     load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  - {consumer_category_id: 137, definition: riding_hall,        load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 138, definition: hayloft,            load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 15.00,  sim_factor: 0.60}
+  - {consumer_category_id: 139, definition: chicken_coop,       load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 140, definition: livestock,          load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 12.00, yearly_consumption_per_m2: 40.00,  sim_factor: 0.60}
+  - {consumer_category_id: 141, definition: agricultural,       load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 142, definition: granary,            load_method: area, parent_category: agricultural, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  # ── Infrastructure (area-based load calculation) ──
+  - {consumer_category_id: 150, definition: train_station,      load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 151, definition: transportation,     load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  - {consumer_category_id: 152, definition: station,            load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.60}
+  - {consumer_category_id: 153, definition: terminal,           load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 45.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.60}
+  - {consumer_category_id: 154, definition: parking,            load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  - {consumer_category_id: 155, definition: garage,             load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 8.00,  yearly_consumption_per_m2: 25.00,  sim_factor: 0.60}
+  - {consumer_category_id: 156, definition: garages,            load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 8.00,  yearly_consumption_per_m2: 25.00,  sim_factor: 0.60}
+  - {consumer_category_id: 157, definition: carport,            load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 15.00,  sim_factor: 0.60}
+  - {consumer_category_id: 158, definition: hangar,             load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 159, definition: service,            load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  - {consumer_category_id: 160, definition: transformer_tower,  load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 15.00,  sim_factor: 0.60}
+  - {consumer_category_id: 161, definition: water_tower,        load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 162, definition: tank,               load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 15.00,  sim_factor: 0.60}
+  - {consumer_category_id: 163, definition: bunker,             load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 10.00, yearly_consumption_per_m2: 30.00,  sim_factor: 0.60}
+  - {consumer_category_id: 164, definition: bridge,             load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 5.00,  yearly_consumption_per_m2: 15.00,  sim_factor: 0.60}
+  - {consumer_category_id: 165, definition: gatehouse,          load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 50.00,  sim_factor: 0.60}
+  - {consumer_category_id: 166, definition: toll_booth,         load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  - {consumer_category_id: 167, definition: tech_cab,           load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  - {consumer_category_id: 168, definition: electricity,        load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  - {consumer_category_id: 169, definition: data_center,        load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 500.00, yearly_consumption_per_m2: 3500.00, sim_factor: 0.60}
+  - {consumer_category_id: 170, definition: utility,            load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  - {consumer_category_id: 171, definition: power,              load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.60}
+  - {consumer_category_id: 172, definition: substation,         load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 60.00,  sim_factor: 0.60}
+  - {consumer_category_id: 173, definition: roof,               load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 2.00,  yearly_consumption_per_m2: 5.00,   sim_factor: 0.60}
+  - {consumer_category_id: 174, definition: ruins,              load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 0.00,  yearly_consumption_per_m2: 0.00,   sim_factor: 0.60}
+  - {consumer_category_id: 175, definition: collapsed,          load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 0.00,  yearly_consumption_per_m2: 0.00,   sim_factor: 0.60}
+  # ── Generic/Unknown (defaults to residential household-based) ──
+  - {consumer_category_id: 200, definition: "yes",              load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 201, definition: building,           load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 202, definition: unclassified,       load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 203, definition: other,              load_method: household, parent_category: residential, peak_load: PEAK_LOAD_HOUSEHOLD, yearly_consumption: 3113,  peak_load_per_m2: null,  yearly_consumption_per_m2: null,   sim_factor: 0.07}
+  - {consumer_category_id: 204, definition: mixed_use,          load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 60.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.50}
+  # ── POI-derived f_classes (from amenity/shop/office/craft/leisure/tourism tags) ──
+  # Amenity POIs
+  - {consumer_category_id: 300, definition: place_of_worship,    load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 15.00, yearly_consumption_per_m2: 55.00,  sim_factor: 0.60}
+  - {consumer_category_id: 301, definition: bicycle_parking,     load_method: area, parent_category: infrastructure, peak_load: null, yearly_consumption: null, peak_load_per_m2: 2.00,  yearly_consumption_per_m2: 5.00,   sim_factor: 0.60}
+  - {consumer_category_id: 302, definition: car_wash,            load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.50}
+  - {consumer_category_id: 303, definition: fuel,                load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.50}
+  - {consumer_category_id: 304, definition: arts_centre,         load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  - {consumer_category_id: 305, definition: post_office,         load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  - {consumer_category_id: 306, definition: dentist,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.50}
+  - {consumer_category_id: 307, definition: doctors,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.50}
+  - {consumer_category_id: 308, definition: nightclub,           load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 60.00, yearly_consumption_per_m2: 250.00, sim_factor: 0.50}
+  - {consumer_category_id: 309, definition: veterinary,          load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 45.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.50}
+  - {consumer_category_id: 310, definition: retirement_home,     load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.60}
+  - {consumer_category_id: 311, definition: crematorium,         load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.60}
+  - {consumer_category_id: 312, definition: studio,              load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.50}
+  # Shop POIs
+  - {consumer_category_id: 320, definition: car_repair,          load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.50}
+  - {consumer_category_id: 321, definition: car,                 load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 322, definition: furniture,           load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.50}
+  - {consumer_category_id: 323, definition: doityourself,        load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 324, definition: convenience,         load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.50}
+  - {consumer_category_id: 325, definition: wholesale,           load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.50}
+  - {consumer_category_id: 326, definition: beverages,           load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.50}
+  - {consumer_category_id: 327, definition: butcher,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.50}
+  - {consumer_category_id: 328, definition: clothes,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 329, definition: hairdresser,         load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.50}
+  - {consumer_category_id: 330, definition: electronics,         load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 331, definition: florist,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 332, definition: hardware,            load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 333, definition: optician,            load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.50}
+  - {consumer_category_id: 334, definition: pet,                 load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 335, definition: shoes,               load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 336, definition: sports,              load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 337, definition: toys,                load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 338, definition: garden_centre,       load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.50}
+  - {consumer_category_id: 339, definition: bicycle,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 340, definition: books,               load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.50}
+  - {consumer_category_id: 341, definition: chemist,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.50}
+  - {consumer_category_id: 342, definition: jewelry,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 343, definition: travel_agency,       load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  # Office POIs
+  - {consumer_category_id: 350, definition: company,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 351, definition: association,         load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.60}
+  - {consumer_category_id: 352, definition: diplomatic,          load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.60}
+  - {consumer_category_id: 353, definition: research,            load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 45.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.60}
+  - {consumer_category_id: 354, definition: insurance,           load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 355, definition: logistics,           load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.50}
+  - {consumer_category_id: 356, definition: educational_institution, load_method: area, parent_category: public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.60}
+  # Craft POIs
+  - {consumer_category_id: 360, definition: plumber,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 361, definition: carpenter,           load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 362, definition: metal_construction,  load_method: area, parent_category: industrial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.60}
+  - {consumer_category_id: 363, definition: stonemason,          load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 364, definition: electrician,         load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 30.00, yearly_consumption_per_m2: 120.00, sim_factor: 0.50}
+  - {consumer_category_id: 365, definition: painter,             load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.50}
+  - {consumer_category_id: 366, definition: gardener,            load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 80.00,  sim_factor: 0.50}
+  # Leisure POIs
+  - {consumer_category_id: 370, definition: fitness_centre,      load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 50.00, yearly_consumption_per_m2: 200.00, sim_factor: 0.50}
+  - {consumer_category_id: 371, definition: swimming_pool,       load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 80.00, yearly_consumption_per_m2: 350.00, sim_factor: 0.60}
+  - {consumer_category_id: 372, definition: sauna,               load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 60.00, yearly_consumption_per_m2: 250.00, sim_factor: 0.50}
+  - {consumer_category_id: 373, definition: dance,               load_method: area, parent_category: commercial,  peak_load: null, yearly_consumption: null, peak_load_per_m2: 40.00, yearly_consumption_per_m2: 160.00, sim_factor: 0.50}
+  # Tourism POIs
+  - {consumer_category_id: 380, definition: gallery,             load_method: area, parent_category: public,      peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 100.00, sim_factor: 0.60}
+  # ── Fallback row for any f_class not listed above ──
+  - {consumer_category_id: 999, definition: _default,           load_method: area, parent_category: commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 29.00, yearly_consumption_per_m2: 155.70, sim_factor: 0.50}
+
+# Equipment data for transformers and cables
+# These are IEC-compliant cable types used across Europe for LV distribution grids:
+# - NYY: PVC-insulated copper cables (German standard, IEC 60502 compliant)
+# - NAYY: PVC-insulated aluminum cables (German standard, IEC 60502 compliant)
+# Equivalent cables in other countries:
+# - Netherlands: GPLK, XLPE (similar specs) - NYY/NAYY are compatible
+# - Austria/Switzerland: Uses same German standards (NYY/NAYY)
+# - France: U-1000 R2V (similar to NYY) - can use NYY as proxy
+# For country-specific equipment, add EQUIPMENT_DATA_<COUNTRY_CODE> section below
+# Cost semantics:
+# - cost_eur: legacy/effective fallback used by older code paths
+# - equipment_only_cost_eur: bare equipment cost (transformer €/unit, cable €/m)
+# - installed_cost_eur: installed CAPEX when available (transformer €/unit, cable €/m)
+EQUIPMENT_DATA:
+  - {name: Tr_100, s_max_kva: 100, cost_eur: 2000, typ: Transformer}
+  - {name: Tr_160, s_max_kva: 160, cost_eur: 3000, typ: Transformer}
+  - {name: Tr_250, s_max_kva: 250, cost_eur: 5000, typ: Transformer}
+  - {name: Tr_400, s_max_kva: 400, cost_eur: 8000, typ: Transformer}
+  - {name: Tr_630, s_max_kva: 630, cost_eur: 12000, typ: Transformer}
+  - {name: Tr_800, s_max_kva: 800, cost_eur: 16000, typ: Transformer}
+  - {name: Tr_1000, s_max_kva: 1000, cost_eur: 20000, typ: Transformer}
+  - {name: Tr_1250, s_max_kva: 1250, cost_eur: 25000, typ: Transformer}
+  - {name: Tr_1600, s_max_kva: 1600, cost_eur: 32000, typ: Transformer}
+  - {name: Tr_2000, s_max_kva: 2000, cost_eur: 40000, typ: Transformer}
+  - {name: Tr_2500, s_max_kva: 2500, cost_eur: 50000, typ: Transformer}
+  - {name: NA2XS(F)2Y_1x240RM_12_20kV_ir_240, max_i_a: 456, r_mohm_per_km: 144, x_mohm_per_km: 182, z_mohm_per_km: 236, cost_eur: 45, typ: Cable} #extrapolated costs
+  - {name: NA2XS(F)2Y_1x150RM_12_20kV_ir_150, max_i_a: 353, r_mohm_per_km: 227, x_mohm_per_km: 195, z_mohm_per_km: 299, cost_eur: 35, typ: Cable} #extrapolated costs
+  - {name: NAYY_4_185, max_i_a: 313, r_mohm_per_km: 164, x_mohm_per_km: 80, z_mohm_per_km: 181, cost_eur: 33, typ: Cable}
+  - {name: NAYY_4_120, max_i_a: 242, r_mohm_per_km: 225, x_mohm_per_km: 80, z_mohm_per_km: 239, cost_eur: 19, typ: Cable}
+  - {name: NYY_4_70, max_i_a: 232, r_mohm_per_km: 268, x_mohm_per_km: 82, z_mohm_per_km: 280, cost_eur: 28, typ: Cable}
+  - {name: NAYY_4_50, max_i_a: 142, r_mohm_per_km: 642, x_mohm_per_km: 83, z_mohm_per_km: 647, cost_eur: 11, typ: Cable}
+  - {name: NYY_4_35, max_i_a: 159, r_mohm_per_km: 524, x_mohm_per_km: 85, z_mohm_per_km: 531, cost_eur: 16, typ: Cable}
+  - {name: NYY_4_16, max_i_a: 103, r_mohm_per_km: 1150, x_mohm_per_km: 90, z_mohm_per_km: 1153, cost_eur: 7, typ: Cable}
+  # - {name: NAYY_4_95, max_i_a: 215, r_mohm_per_km: 320, x_mohm_per_km: 82, z_mohm_per_km: 330, cost_eur: 21, typ: Cable}
+  # - {name: NYY_4_95, max_i_a: 280, r_mohm_per_km: 193, x_mohm_per_km: 82, z_mohm_per_km: 210, cost_eur: 37, typ: Cable}
+  # - {name: NAYY_4_150, max_i_a: 270, r_mohm_per_km: 208, x_mohm_per_km: 80, z_mohm_per_km: 223, cost_eur: 24, typ: Cable}
+  # - {name: NFA2X_4_95, max_i_a: 245, r_mohm_per_km: 320, x_mohm_per_km: 0, z_mohm_per_km: 320, cost_eur: 10, typ: Cable}
+  # - {name: NFA2X_4_70, max_i_a: 205, r_mohm_per_km: 443, x_mohm_per_km: 0, z_mohm_per_km: 443, cost_eur: 8, typ: Cable}
+  # - {name: NFA2X_4_50, max_i_a: 165, r_mohm_per_km: 641, x_mohm_per_km: 0, z_mohm_per_km: 641, cost_eur: 7, typ: Cable}
+
+# Cables available for consumer connections (house connections from feeder to buildings) - must be a subset of the equipment data cables
+CONSUMER_CONNECTION_AVAILABLE_CABLES:
+  - NAYY_4_120  # NAYY_4_120
+  - NAYY_4_50   # NAYY_4_50
+  - NYY_4_35    # NYY_4_35
+  - NYY_4_16    # NYY_4_16
+# Thresholds to derive settlement_types
+RURAL_MAX_HOUSEHOLDS: 1.25 # Maximum average number of households per building for rural settlements
+URBAN_MIN_HOUSEHOLDS: 5 # Minimum average number of households per building for urban settlements
+RURAL_MIN_BUILDING_DISTANCE: 50 # Minimum average distance between buildings for rural settlements
+URBAN_MAX_BUILDING_DISTANCE: 25 # Maximum average distance between buildings for urban settlements
+SETTLEMENT_TYPE_SCORE_DEADBAND: 0.05 # Prefer settlement type 2 when the weighted score is close to a threshold
+
+# Transformer mapping: Settlement Type -> Allowed Transformer Capacities (s_max_kva)
+TRANSFORMER_MAPPING:
+  1: [100, 160, 250] # 1=Rural
+  2: [160, 250, 400, 630] # 2=Semi-urban
+  3: [400, 630] # 3=Urban
+
+# Transformer placement parameters
+MAX_BROWNFIELD_TRAFO_DISTANCE: 800 # Maximum connection distance from brownfield transformer
+# Extend postcode boundary when selecting candidate roads to reduce artificial edge fragmentation.
+WAYS_BOUNDARY_BUFFER_M: 50.0
+# Larger components are divided by k-means clustering in roughly LARGE_COMPONENT_DIVIDER sizes
+LARGE_COMPONENT_LOWER_BOUND: 500 # Threshold for number of buildings in a component to apply k-means clustering
+LARGE_COMPONENT_DIVIDER: 1000 # Divider to derive the target number of clusters for k-means clustering
+# Seed for the initialization of the k-means clustering for transformer placement - keeping the same ensures deterministic behavior
+K_MEANS_SEED: 3329829316 # Has to be an integer between 0 and 4294967295
+# Optional post-processing to reduce artificial singleton kcids from fragmented roads.
+# Only tiny components are merged, and only when a short synthetic bridge edge can connect them.
+SMALL_COMPONENT_MERGE_ENABLED: true
+SMALL_COMPONENT_MERGE_MAX_BUILDINGS: 1
+SMALL_COMPONENT_MERGE_MAX_DISTANCE_M: 120.0
+SMALL_COMPONENT_MERGE_BRIDGE_CLAZZ: -99
+# Post-clustering QA gates (warning by default; can be set to hard-fail in strict runs).
+KCID_QA_GATES_ENABLED: true
+KCID_QA_MAX_SINGLETON_RATIO: 0.75
+KCID_QA_MAX_UNASSIGNED_CONSUMERS: 0
+KCID_QA_RAISE_ON_FAILURE: false
+
+# =============================================================================
+# CABLE DIMENSIONING PARAMETERS
+# =============================================================================
+VN: 400  # Nominal voltage in the low voltage grid
+V_BAND_LOW: 0.95  # Relevant for worst case condition
+V_BAND_HIGH: 1.05 # Only for pandapower - not for dimensioning
+### Load thresholds for different voltage drop limits
+SMALL_LOAD_THRESHOLD_KW: 100  # Threshold below which stricter voltage drop limits apply
+# Voltage drop limits for consumer connections (as percentage of nominal voltage per km)
+VOLTAGE_DROP_SMALL_LOAD_PERCENT_PER_KM: 0.05  # 0.05% per km: Maximum voltage drop for loads ≤ 100kW (0.002V per km)
+VOLTAGE_DROP_LARGE_LOAD_PERCENT_PER_KM: 0.1   # 0.1% per km: Maximum voltage drop for loads > 100kW (0.004V per km)
+# Voltage drop limit for feeder cables (total voltage drop as percentage of nominal voltage)
+VOLTAGE_DROP_DISTRIBUTION_PERCENT: 4.5  # 4.5% of 400V = 18V total voltage drop for distribution
+TRANSFORMER_LOADING_MARGIN: 1.10  # Additional sizing margin on top of apparent-power conversion

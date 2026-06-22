@@ -1,0 +1,91 @@
+# Change version if you changed any grid parameters or queries (e.g. transformer query)
+VERSION_ID: "1.0"
+
+# state here which parameters, queries are used to compute the grids with current VERSION_ID
+VERSION_COMMENT: base version
+
+PLOT_COLOR_DICT:
+  100: gold
+  160: orange
+  200: darkorange
+  250: peru
+  315: orangered
+  400: red
+  515: crimson
+  500: crimson
+  630: purple
+  715: blue
+  800: darkblue
+  1260: black
+
+CONNECTION_AVAILABLE_CABLES:
+  - NAYY 4x120 SE
+  - NAYY 4x95 SE
+  - NAYY 4x50 SE
+  - NYY 4x16 SE
+  - NYY 4x35 SE
+  - NYY 4x70 SE
+
+# PARAMETERS
+CABLE_COST_DICT:
+  NAYY 4x185 SE: 33
+  NAYY 4x150 SE: 24
+  NAYY 4x120 SE: 19
+  NAYY 4x95 SE: 16
+  NAYY 4x50 SE: 11
+  NYY 4x16 SE: 7
+  NYY 4x35 SE: 16
+  NYY 4x95 SE: 37
+  NYY 4x70 SE: 28
+
+# installed_power * (sim_factor + (1 - sim_factor) * (load_count ** (-3 / 4)))
+SIM_FACTOR: {Residential: 0.07, Public: 0.6, Commercial: 0.5, Industrial: 0.55}
+
+PEAK_LOAD_HOUSEHOLD: 5.00  # kW - typical German household peak electrical load
+
+# Consumer categories with energy consumption values based on research:
+#
+# Research Sources:
+# 1. Fraunhofer ISI (2024): "Developing a regionalized representative building stock model for Germany"
+#    https://publica.fraunhofer.de/entities/publication/928969f0-b7dc-4ca4-afa3-46e43b6ba732
+# 2. TABULA/EPISCOPE Project: "Typology Approach for Building Stock Energy Assessment"
+#    https://episcope.eu/building-typology/country/de/
+# 3. ODYSSEE-MURE: "Germany Energy Profile"
+#    https://www.odyssee-mure.eu/publications/efficiency-trends-policies-profiles/germany-country-profile-english.pdf
+# 4. dena BUILDING REPORT 2023/2024
+#    https://www.dena.de/en/infocenter/dena-building-report-2024/
+# 5. VDI 3807 Part 2: Characteristic consumption values for buildings
+#    https://www.vdi.de/en/home/vdi-standards/details/vdi-3807-blatt-2
+# 6. EU Building Stock Observatory
+#    https://energy.ec.europa.eu/topics/energy-efficiency/energy-performance-buildings/eu-building-stock-observatory_en
+#
+# Values represent TOTAL final energy (heating + hot water + electricity) for existing building stock.
+# dena 2023: Office 180-250, Retail 250-400, Residential old 150-250, new 60-120
+# VDI 3807: Office heating median ~101, target ~55 kWh/m²
+#
+CONSUMER_CATEGORIES:
+  # Commercial/Office: dena reports 180-250 kWh/m²/year for typical German offices
+  # Peak load ~20-30 W/m² for electrical systems (VDI 3807)
+  - {consumer_category_id: 1, definition: Commercial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 25.00, yearly_consumption_per_m2: 180.00, sim_factor: 0.50}
+  # Public: Schools, civic buildings - VDI 3807 ~100-150 kWh/m²/year
+  # Peak load ~15-25 W/m² for electrical systems
+  - {consumer_category_id: 2, definition: Public, peak_load: null, yearly_consumption: null, peak_load_per_m2: 20.00, yearly_consumption_per_m2: 140.00, sim_factor: 0.60}
+  # Industrial: Light industry/workshops - varies widely, using conservative estimate
+  # Peak load ~30-50 W/m² depending on type
+  - {consumer_category_id: 3, definition: Industrial, peak_load: null, yearly_consumption: null, peak_load_per_m2: 35.00, yearly_consumption_per_m2: 170.00, sim_factor: 0.55}
+  # Residential types - TABULA existing stock averages:
+  # Detached/house non-modernized ~150-220 kWh/m²/year (using 160 as weighted average)
+  # Apartments/residential non-modernized ~120-160 kWh/m²/year (using 135 as weighted average)
+  - {consumer_category_id: 9, definition: house, peak_load: 6.00, yearly_consumption: 4500.00, peak_load_per_m2: null, yearly_consumption_per_m2: 160.00, sim_factor: 0.07}
+  - {consumer_category_id: 10, definition: apartments, peak_load: 4.00, yearly_consumption: 3500.00, peak_load_per_m2: null, yearly_consumption_per_m2: 135.00, sim_factor: 0.07}
+  - {consumer_category_id: 11, definition: terrace, peak_load: 5.00, yearly_consumption: 4000.00, peak_load_per_m2: null, yearly_consumption_per_m2: 150.00, sim_factor: 0.07}
+  - {consumer_category_id: 12, definition: residential, peak_load: 3.50, yearly_consumption: 3000.00, peak_load_per_m2: null, yearly_consumption_per_m2: 130.00, sim_factor: 0.07}
+
+# Larger components are divided by k-means clustering in roughly LARGE_COMPONENT_DIVIDER sizes
+LARGE_COMPONENT_LOWER_BOUND: 2000
+LARGE_COMPONENT_DIVIDER: 1000
+
+# Voltage properties
+VN: 400  # V
+V_BAND_LOW: 0.95  # +-5%
+V_BAND_HIGH: 1.05
